@@ -1,3 +1,68 @@
+# Dream-In 🌙
+### 감정 기반 꿈 기록 & AI 해몽 다이어리
+
+> 어젯밤 당신의 꿈, 오늘의 당신에게 말을 겁니다.
+
+🔗 [배포 링크](https://dream-in.vercel.app)
+
+---
+
+## 👤 박재현 담당 기능
+
+### 기획 및 설계
+- 전체 PRD 작성, 사용자 리서치 (6인 인터뷰), 아키텍처 설계
+- 플로우차트, 폴더 구조, 컴포넌트 분담 기준 정의
+- 팀 병렬 개발 후 통합 전략 수립 및 리드
+
+### 꿈 기록 플로우 전체
+- **DreamWritePage** — 제목/내용/감정 입력, 유효성 검증, 에러 처리
+  입력 시작 즉시 에러 메시지 자동 해제 처리
+- **DreamDetail** — OpenAI API 연동 해몽 출력
+  로딩 스피너 + 결과 영역 자동 스크롤 처리
+- **DreamList** — 카테고리 필터링, 페이지네이션, 삭제 후 목록 즉시 반영
+- **DreamEdit** — React Router state 기반 수정 데이터 상세 페이지 연동
+
+### 감정일기 / 즐겨찾기
+- EmotionDetail / EmotionList / EmotionEdit 구현
+- 즐겨찾기 기능 (FavoriteContext + 로컬스토리지)
+  - 페이지 새로고침 후에도 즐겨찾기 상태 유지
+  - dream / emotion id 충돌 문제 발견
+  → `key={\`${item.type}-${item.id}\`}` 조합으로 해결
+
+### 공용 컴포넌트
+- BackButton · Pagination · TextArea · PostButton
+  ScrollToTop · WarningModal 설계 및 구현
+- 다크/라이트 모드 대응 구조 설계
+- Footer, 고객센터 페이지 구현
+
+---
+
+## 🔥 트러블슈팅
+
+| 문제 | 원인 | 해결 |
+|------|------|------|
+| 페이지 이동 시 데이터가 undefined로 전달 | navigate() 호출 시 state 객체 누락 | state 구조 수정 + useLocation으로 안전하게 수신 + 없을 때 리다이렉트 처리 |
+| 즐겨찾기 목록 중복 렌더링 | dream/emotion id가 각각 1,2,3... 으로 충돌 | `key={\`${item.type}-${item.id}\`}` 조합으로 고유 key 구성 |
+| 에러 메시지가 입력 후에도 미해제 | 에러 제거 로직 없음 | 각 입력 onChange에서 에러 상태 자동 초기화 |
+
+---
+
+## 🛠 기술 스택
+
+| 분류 | 기술 |
+|------|------|
+| Frontend | React · JavaScript · Vite |
+| UI/UX | Emotion styled · Framer Motion · Swiper |
+| Backend | Supabase (Auth / DB / Storage) |
+| AI | OpenAI API (GPT 기반 해몽) |
+| 상태 관리 | Context API |
+| 배포 | Vercel |
+
+---
+
+<details>
+<summary>📄 전체 프로젝트 문서 보기</summary>
+
 # 프로젝트
 
 ## 1. 개요
@@ -499,4 +564,7 @@ EmotionList.jsx
 │
 ├── App.jsx // 전체 앱 라우터 구조 설정 (페이지 연결)
 └── main.jsx // 앱 시작점. <App />을 root에 렌더링
+```
+
+</details>
 ```
